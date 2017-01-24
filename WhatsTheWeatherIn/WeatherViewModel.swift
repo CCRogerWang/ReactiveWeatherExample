@@ -13,14 +13,14 @@ final class WeatherViewModel {
     
     //MARK: - Dependecies
     
-    private let weatherService: WeatherAPIService
-    private let disposeBag = DisposeBag()
-    private let formatter = NSDateFormatter()
+    fileprivate let weatherService: WeatherAPIService
+    fileprivate let disposeBag = DisposeBag()
+    fileprivate let formatter = DateFormatter()
     
     
     //MARK: - Model
     
-    private let weather: Observable<Weather>
+    fileprivate let weather: Observable<Weather>
     
     ///The name of the currently displayed city.
     let cityName: Observable<String>
@@ -101,17 +101,17 @@ final class WeatherViewModel {
     //MARK: - Private methods
     
     ///Parses the forecast data into an array of (date, forecasts for that day) tuple.
-    private func cells(from weather: Weather)-> [(day: String, forecasts: [ForecastModel])] {
+    fileprivate func cells(from weather: Weather)-> [(day: String, forecasts: [ForecastModel])] {
         
         //There's probably a better way to write this.
         
-        func dateTimestampFromDate(date: NSDate)-> String {
+        func dateTimestampFromDate(_ date: Date)-> String {
             formatter.dateFormat = "YYMMdd HHmm"
-            return formatter.stringFromDate(date)
+            return formatter.string(from: date)
         }
         
-        func dayTimestampFromDateTimstamp(timestamp: String)-> String {
-            return String(timestamp.characters.split(" ")[0])
+        func dayTimestampFromDateTimstamp(_ timestamp: String)-> String {
+            return String(timestamp.characters.split(separator: " ")[0])
         }
         
         let allTimestamps = weather.forecasts
@@ -140,10 +140,10 @@ final class WeatherViewModel {
             .uniqueElements
         
         //Combine those two Arrays into an Array of tuples
-        return Array(Zip2Sequence(dayStrings, forecastModels))
+        return Array(zip(dayStrings, forecastModels))
     }
     
-    private func forecastModel(from forecast: Forecast)-> ForecastModel {
+    fileprivate func forecastModel(from forecast: Forecast)-> ForecastModel {
         return ForecastModel(
             time: forecast.date.formattedTime(formatter),
             description: forecast.description,
