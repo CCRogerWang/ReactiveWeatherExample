@@ -42,6 +42,6 @@ func ==(lhs: NSDate, rhs: NSDate) -> Bool {
     return (lhs == rhs)
 }
 
-public func <(lhs: Date, rhs: Date) -> Bool {
-    return (lhs as NSDate).earlierDate(rhs) === lhs
+public func <(lhs: NSDate, rhs: NSDate) -> Bool {
+    return (lhs as NSDate).earlierDate(rhs as Date) == (lhs as Date)
 }

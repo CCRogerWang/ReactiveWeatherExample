@@ -43,20 +43,47 @@ class WeatherAPIService {
             "type": "like" as AnyObject,
             "APPID": Constants.APPID as AnyObject
         ]
-        
-        return request(.get, ResourcePath.Forecast.path, parameters: params, encoding: .URLEncodedInURL)
-            .rx_JSON()
+        print("do search...")
+        return request(.get, ResourcePath.Forecast.path, parameters: params, encoding: URLEncoding.default, headers: nil)
             .map(JSON.init)
             .flatMap { json -> Observable<Weather> in
                 guard let weather = Weather(json: json) else {
-                    return Observable.error(APIError.CannotParse)
+                    return Observable.error(APIError.cannotParse)
                 }
                 
                 return Observable.just(weather)
-            }
+        }
+//        return request(.get, ResourcePath.Forecast.path, parameters: params, encoding: .URLEncodedInURL)
+//            .rx_JSON()
+//            .map(JSON.init)
+//            .flatMap { json -> Observable<Weather> in
+//                guard let weather = Weather(json: json) else {
+//                    return Observable.error(APIError.CannotParse)
+//                }
+//                
+//                return Observable.just(weather)
+//            }
     }
-    
-    func weatherImage(forID imageID: String)-> Observable<NSData> {
-        return request(.GET, ResourcePath.Icon.path + imageID + ".png").rx_data()
+//        return request(.GET, ResourcePath.Icon.path + imageID + ".png").rx_data()
+    func weatherImage(forID imageID: String) -> Observable<Data>{
+//        return request(.GET, ResourcePath.Icon.path + imageID + ".png").rx_data()
+//        return request(.get, ResourcePath.Icon.path + imageID + ".png")
+        return RxAlamofire.data(.get, ResourcePath.Icon.path + imageID + ".png")
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
