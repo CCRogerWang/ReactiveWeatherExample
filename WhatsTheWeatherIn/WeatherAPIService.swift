@@ -43,16 +43,23 @@ class WeatherAPIService {
             "type": "like" as AnyObject,
             "APPID": Constants.APPID as AnyObject
         ]
-        print("do search...")
-        return request(.get, ResourcePath.Forecast.path, parameters: params, encoding: URLEncoding.default, headers: nil)
-            .map(JSON.init)
-            .flatMap { json -> Observable<Weather> in
-                guard let weather = Weather(json: json) else {
-                    return Observable.error(APIError.cannotParse)
-                }
-                
-                return Observable.just(weather)
+        print("do search... \(ResourcePath.Forecast.path) \(params)")
+        
+        
+        
+        return json(.get, ResourcePath.Forecast.path, parameters: params, encoding: URLEncoding.default, headers: nil).flatMap { json -> Observable<Weather> in
+            print(json)
+            guard let weather = Weather(json: json as! JSON) else {
+                return Observable.error(APIError.cannotParse)
+            }
+            
+            return Observable.just(weather)
         }
+        
+        
+        
+        
+        
 //        return request(.get, ResourcePath.Forecast.path, parameters: params, encoding: .URLEncodedInURL)
 //            .rx_JSON()
 //            .map(JSON.init)

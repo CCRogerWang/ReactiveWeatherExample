@@ -52,12 +52,23 @@ final class WeatherOverviewViewController: UIViewController {
     
     fileprivate func addBindsToViewModel(_ viewModel: WeatherViewModel) {
         
-        cityTextField.rx.text
-            .subscribe { cityName in
-                print(cityName)
-            }
-            .addDisposableTo(disposeBag)
+//        cityTextField.rx.text
+//            .subscribe((onNext: { cityName in
+//                
+//                
+//            }))
+//            .addDisposableTo(disposeBag)
         
+        
+//        cityTextField.rx.text.subscribeNext { text in
+//            self.viewModel.searchText.onNext(text)
+//            }
+//            .addDisposableTo(disposeBag)
+        
+        cityTextField.rx.text
+            .orEmpty
+            .bindTo(viewModel.searchText)
+            .addDisposableTo(disposeBag)
         
         viewModel.cityName
             .bindTo(cityNameLabel.rx.text)
