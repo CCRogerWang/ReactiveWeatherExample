@@ -32,7 +32,7 @@ final class WeatherViewModel {
     let temp: Observable<String>
     
     ///The data for a small image (e.g. clouds) representing the current weather
-//    let weatherImageData: Observable<Data>
+    let weatherImageData: Observable<Data>
     
     ///Background image to display for a certain current weather
     let weatherBackgroundImage: Observable<WeatherBackgroundImage>
@@ -88,9 +88,9 @@ final class WeatherViewModel {
         weatherDescription = weather
             .map { $0.currentWeather.description }
         
-//        weatherImageData = weather
-//            .map { $0.currentWeather.imageID }
-//            .flatMap(weatherService.weatherImage(forID: "aaa"))
+        weatherImageData = weather
+            .map { $0.currentWeather.imageID }
+            .flatMap(weatherService.weatherImage)
         
         weatherBackgroundImage = weather
             .map { $0.currentWeather.imageID }

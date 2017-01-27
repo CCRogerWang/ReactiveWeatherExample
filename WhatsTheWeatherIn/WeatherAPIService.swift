@@ -47,34 +47,19 @@ class WeatherAPIService {
         
         
         
-        return json(.get, ResourcePath.Forecast.path, parameters: params, encoding: URLEncoding.default, headers: nil).flatMap { json -> Observable<Weather> in
-            print(json)
-            guard let weather = Weather(json: json as! JSON) else {
-                return Observable.error(APIError.cannotParse)
-            }
+        return json(.get, ResourcePath.Forecast.path, parameters: params, encoding: URLEncoding.default, headers: nil)
+            .map(JSON.init)
+            .flatMap { json -> Observable<Weather> in
+                guard let weather = Weather(json: json) else {
+                    return Observable.error(APIError.cannotParse)
+                }
             
             return Observable.just(weather)
         }
-        
-        
-        
-        
-        
-//        return request(.get, ResourcePath.Forecast.path, parameters: params, encoding: .URLEncodedInURL)
-//            .rx_JSON()
-//            .map(JSON.init)
-//            .flatMap { json -> Observable<Weather> in
-//                guard let weather = Weather(json: json) else {
-//                    return Observable.error(APIError.CannotParse)
-//                }
-//                
-//                return Observable.just(weather)
-//            }
+ 
     }
-//        return request(.GET, ResourcePath.Icon.path + imageID + ".png").rx_data()
+
     func weatherImage(forID imageID: String) -> Observable<Data>{
-//        return request(.GET, ResourcePath.Icon.path + imageID + ".png").rx_data()
-//        return request(.get, ResourcePath.Icon.path + imageID + ".png")
         return RxAlamofire.data(.get, ResourcePath.Icon.path + imageID + ".png")
     }
 }

@@ -52,18 +52,7 @@ final class WeatherOverviewViewController: UIViewController {
     
     fileprivate func addBindsToViewModel(_ viewModel: WeatherViewModel) {
         
-//        cityTextField.rx.text
-//            .subscribe((onNext: { cityName in
-//                
-//                
-//            }))
-//            .addDisposableTo(disposeBag)
-        
-        
-//        cityTextField.rx.text.subscribeNext { text in
-//            self.viewModel.searchText.onNext(text)
-//            }
-//            .addDisposableTo(disposeBag)
+
         
         cityTextField.rx.text
             .orEmpty
@@ -82,10 +71,10 @@ final class WeatherOverviewViewController: UIViewController {
             .bindTo(weatherMessageLabel.rx.text)
             .addDisposableTo(disposeBag)
         
-//        viewModel.weatherImageData
-//            .map(UIImage)
-//            .bindTo(weatherIconImageView.rx_image)
-//            .addDisposableTo(disposeBag)
+        viewModel.weatherImageData
+            .map(UIImage.init)
+            .bindTo(weatherIconImageView.rx.image)
+            .addDisposableTo(disposeBag)
         
         viewModel.weatherBackgroundImage
             .map { $0.image }
